@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Keyboard Challenge</title>
+
+<style>
+  body {
+    background: linear-gradient(135deg, #1e1e2f, #2c2c44);
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+
+  .game {
+    background: #111827;
+    padding: 30px;
+    border-radius: 15px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  #word {
+    font-size: 36px;
+    margin: 20px 0;
+    letter-spacing: 2px;
+  }
+
+  input {
+    width: 90%;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    text-align: center;
+  }
+
+  #score {
+    font-size: 20px;
+    color: #08a140;
+    margin-top: 10px;
+  }
+
+  #timer {
+    font-size: 18px;
+    color: #ff2626;
+  }
+
+  button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #5b5ee0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    background: gray;
+    cursor: not-allowed;
+  }
+
+  .correct {
+    color: #4ade80;
+  }
+
+  .wrong {
+    color: #f87171;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="game">
+  <h1>Keyboard Challenge</h1>
+
+  <div id="timer">Time: 50s</div>
+  <div id="word">READY</div>
+
+  <input id="input" type="text" placeholder="Type the word" disabled>
+
+  <div id="score">Score: 0</div>
+
+  <button id="start">Start Game</button>
+</div>
+
+<script>
+  const words = [
+    "html", "css", "javascript", "keyboard",
+    "coding", "developer", "computer",
+    "browser", "function", "variable", "cake",
+    "apple", "river", "cloud", "neon", "whisper", 
+    "galaxy", "paper", "ember", "shadow", "mint", "signal",
+    "velvet", "orbit", "pixel", "candle", "forest", "echo",
+   "silver", "coffee", "breeze", "lantern", "mirror", "stone",
+    "sunrise", "feather", "clock", "island", "marble", "thunder", "window",
+    "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+    "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+    "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+    "31", "32", "33", "34", "35", "36", "37", "38", "39", "40",
+    "41", "42", "43", "44", "45", "46", "47", "48", "49", "50",
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+    "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+    "U", "V", "W", "X", "Y", "Z"
+
+
+
+  ];
+
+  let currentWord = "";
+  let score = 0;
+  let time = 50;
+  let gameOn = false;
+  let interval;
+
+  const wordDiv = document.getElementById("word");
+  const input = document.getElementById("input");
+  const scoreDiv = document.getElementById("score");
+  const timerDiv = document.getElementById("timer");
+  const startBtn = document.getElementById("start");
+
+  function randomWord() {
+    currentWord = words[Math.floor(Math.random() * words.length)];
+    wordDiv.textContent = currentWord.toUpperCase();
+    input.value = "";
+  }
+
+  function startGame() {
+    score = 0;
+    time = 60;
+    gameOn = true;
+
+    scoreDiv.textContent = "Score: 0";
+    timerDiv.textContent = "Time: 50s";
+
+    startBtn.disabled = true;
+    input.disabled = false;
+    input.focus();
+
+    randomWord();
+
+    interval = setInterval(() => {
+      time--;
+      timerDiv.textContent = "Time: " + time + "s";
+
+      if (time === 0) {
+        clearInterval(interval);
+        gameOn = false;
+        wordDiv.textContent = "GAME OVER";
+        input.disabled = true;
+        startBtn.disabled = false;
+      }
+    }, 1000);
+  }
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && gameOn) {
+      if (input.value.toLowerCase() === currentWord) {
+        score++;
+        wordDiv.className = "correct";
+      } else {
+        score--;
+        wordDiv.className = "wrong";
+      }
+
+      scoreDiv.textContent = "Score: " + score;
+      randomWord();
+
+      setTimeout(() => {
+        wordDiv.className = "";
+      }, 200);
+    }
+  });
+
+  startBtn.addEventListener("click", startGame);
+</script>
+
+</body>
+</html>

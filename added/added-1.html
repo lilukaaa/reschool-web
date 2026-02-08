@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>‎ </title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f121a;
+    --panel:#161b25;
+    --card:#1a1f2b;
+    --muted:#9aa3b2;
+    --accent:#7c5cff;
+    --accent-2:#41d1ff;
+    --glass: rgba(255,255,255,0.03);
+    --glass-2: rgba(255,255,255,0.02);
+    --success:#55c57a;
+    --danger:#ff6b6b;
+    --warning:#ffb86b;
+  }
+
+:root.light {
+  --bg:#f2f4f8;
+  --panel:#ffffff;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent:#7c5cff;
+  --accent-2:#41d1ff;
+  --glass: rgba(0,0,0,0.05);
+  --glass-2: rgba(0,0,0,0.04);
+  --success:#0da56c;
+  --danger:#e54343;
+  --warning:#e0a34b;
+}
+
+body.light {
+  color:#1a1a1a;
+}
+
+body.light .card,
+body.light .boxsection,
+body.light .side,
+body.light .right-panel {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  border-color: rgba(0,0,0,0.06);
+}
+
+body.light table td,
+body.light table th {
+  color:#333;
+}
+
+body.light .muted,
+body.light .small,
+body.light .role-badge {
+  color:#555;
+}
+
+body, .card, .side, .boxsection, .right-panel {
+  transition: background .3s ease, color .3s ease;
+}
+
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif}
+  html,body{height:100%}
+  body{
+    background:linear-gradient(180deg,var(--bg) 0%, #0c0e14 100%);
+    color:#e6eef8;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  .dashy{
+    display:grid;
+    grid-template-columns:84px 1fr 320px;
+    gap:18px;
+    height:100vh;
+    padding:18px;
+  }
+
+  .side{
+    background:var(--panel);
+    border-radius:14px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    position:relative;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+  }
+  .logo{
+    width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--card),var(--muted));
+    color:#fff;font-weight:700;font-size:18px;box-shadow:0 6px 18px rgba(124,92,255,0.15);
+  }
+  .side i{opacity:0.7;cursor:pointer;transition:all .18s}
+  .side i:hover{opacity:1;transform:translateY(-3px)}
+  .notif-badge{
+    position:absolute;top:14px;right:14px;background:var(--accent);color:#000000;padding:6px 8px;border-radius:999px;font-size:12px;font-weight:700;
+    box-shadow:0 4px 12px rgba(255,107,107,0.12);
+  }
+
+  .main{
+    background:transparent;
+    overflow:auto;
+    padding:6px 6px 18px 6px;
+  }
+  #MainChart {
+  height: 330px !important;
+}
+
+  .top{
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;
+    gap:12px;
+  }
+  .greetings{
+    display:flex;gap:14px;align-items:center;
+  }
+  h2#greeting{font-weight:600}
+  .meta{color:var(--muted);font-size:13px}
+
+  .nav-links a{margin-right:14px;opacity:0.6;text-decoration:none;color:inherit}
+  .nav-links .active{opacity:1;font-weight:600}
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:18px;
+  }
+  .card{
+    background: linear-gradient(180deg,var(--card), rgba(255,255,255,0.01));
+    border-radius:12px;padding:18px;text-align:left;position:relative;overflow:hidden;
+    transition:transform .22s,box-shadow .22s,backdrop-filter .22s;
+    box-shadow: 0 6px 18px rgba(6,8,14,0.7);
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .card:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(2,6,23,0.7);backdrop-filter:blur(6px)}
+  .card .label{color:var(--muted);font-size:13px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+  .count{font-size:28px;font-weight:700}
+  .status-dot{width:9px;height:9px;border-radius:99px;display:inline-block;margin-right:8px;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+  .status-new{background:var(--success)}
+  .status-resigned{background:var(--danger)}
+  .status-app{background:var(--warning)}
+
+  .boxsection{background:var(--card);border-radius:12px;padding:18px;margin-bottom:18px;border:1px solid rgba(255,255,255,0.02)}
+  .boxsection h3{margin-bottom:12px}
+  canvas{max-width:100%;height:160px}
+
+  .search-wrap{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+  .search-wrap input{
+    background:var(--glass);border:1px solid rgba(255,255,255,0.03);padding:10px 12px;border-radius:10px;color:inherit;width:320px;
+    outline:none;box-shadow:inset 0 -6px 14px rgba(0,0,0,0.5);
+  }
+  .search-wrap .filters{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px}
+
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:10px 8px;border-bottom:1px dashed rgba(255,255,255,0.02);text-align:left;color:#cfe6ff}
+  th{color:var(--muted);font-size:13px}
+  tr:hover td{background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent)}
+  .role-badge{background:var(--glass-2);padding:6px 8px;border-radius:8px;color:var(--muted);font-size:13px}
+  .right-panel{
+    background:var(--panel);border-radius:12px;padding:18px;overflow:auto;border:1px solid rgba(255,255,255,0.02);
+    box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+  }
+  .country-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;cursor:pointer;transition:all .14s}
+  .country-item:hover{transform:translateY(-4px);background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent)}
+  .country-flag{width:36px;height:24px;border-radius:6px;flex-shrink:0;display:inline-grid;place-items:center;background:#fff;color:#000;font-weight:700}
+  .progress {
+    height:8px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden;width:100%;
+  }
+  .progress > i{display:block;height:100%;width:0%;border-radius:999px;box-shadow:0 6px 14px rgba(65,209,255,0.08)}
+  .vacancy-item{padding:8px 10px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent);margin-bottom:10px}
+  .country-row{display:grid;grid-template-columns:40px 1fr 60px;gap:12px;align-items:center}
+
+  .activity{margin-top:20px}
+  .activity .item{display:flex;gap:12px;padding:10px;border-radius:8px;margin-bottom:8px;background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent)}
+  .activity .time{color:var(--muted);font-size:12px;margin-left:auto}
+
+  .page-meta{color:var(--muted);font-size:12px;margin-top:8px}
+
+  @media(max-width:1100px){
+    .dashy{grid-template-columns:70px 1fr}
+    .right-panel{display:none}
+  }
+  @media(max-width:750px){
+    .stats{grid-template-columns:1fr 1fr}
+    .search-wrap input{width:100%}
+  }
+  @media(max-width:520px){
+    .dashy{grid-template-columns:1fr}
+    .side{flex-direction:row;height:64px;padding:10px}
+    .right-panel{display:none}
+    .stats{grid-template-columns:1fr}
+  }
+
+
+  .country-flag img{
+    width: 40px;
+    height: 25px;
+  }
+
+  .muted{color:var(--muted);font-size:13px}
+  .small{font-size:13px;color:var(--muted)}
+  .pill{background:var(--glass);padding:6px 10px;border-radius:999px;font-size:13px}
+  button.btn{background:linear-gradient(90deg,var(--bg),var(--muted));border:none;color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="dashy">
+
+  <aside class="side" aria-label="Primary sidebar">
+    <div class="logo" title="L">User</div>
+
+    <i title="Home" role="img" aria-hidden="true">🏠</i>
+    <i title="Chats" role="img" aria-hidden="true">💬</i>
+    <i title="Analytics" role="img" aria-hidden="true">📊</i>
+    <i title="Calendar" role="img" aria-hidden="true">📅</i>
+    <i title="Settings" role="img" aria-hidden="true">⚙️</i>
+
+    <div id="notifBadge" class="notif-badge" aria-live="polite">0</div>
+  </aside>
+
+  <main class="main" role="main" aria-label="Main content">
+
+    <header class="top">
+      <button id="themeToggle" class="btn" style="min-width:120px">Light Mode</button>
+
+      <div class="greetings">
+        <div>
+          <h2 id="greeting">Good morning, User</h2>
+          <div class="meta" id="timeNow">Tbilisi time — </div>
+        </div>
+
+        <div class="pill small">Last updated: <span id="lastUpdated">—</span></div>
+      </div>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#">Schedule</a>
+        <a class="active" href="#">Analytics</a>
+        <a href="#">Candidates</a>
+        <a href="#">KPI</a>
+        <a href="#">Leads</a>
+      </nav>
+    </header>
+
+    <section class="stats" aria-label="Key metrics">
+      <div class="card">
+        <div class="label"><span class="status-dot status-new"></span>Employees</div>
+        <div class="count" data-target="418">418</div>
+        <div class="small muted">Active now: <strong id="activeNow">56</strong></div>
+      </div>
+
+      <div class="card">
+        <div class="label"><span class="status-dot status-new"></span>New hires</div>
+        <div class="count" data-target="21">21</div>
+        <div class="small muted">This month: 12</div>
+      </div>
+
+      <div class="card">
+        <div class="label"><span class="status-dot status-resigned"></span>Resigned</div>
+        <div class="count" data-target="14">14</div>
+        <div class="small muted">This month: 3</div>
+      </div>
+
+      <div class="card">
+        <div class="label"><span class="status-dot status-app"></span>Applicants</div>
+        <div class="count" data-target="261">261</div>
+        <div class="small muted">Open roles: 8</div>
+      </div>
+    </section>
+
+    <section class="boxsection">
+      <h3>Vacancy Trends</h3>
+      <canvas id="MainChart" height="140"></canvas>
+      <div class="muted small" style="margin-top:10px">Comparison between Vacancies and Candidates over the year.</div>
+    </section>
+
+    <section class="boxsection" aria-label="Employees">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3>Employees</h3>
+        <div class="small muted">Total: <strong id="empCount">0</strong></div>
+      </div>
+
+      <div class="search-wrap">
+        <input id="searchInput" placeholder="Search by name, ID or role…">
+        <div class="filters"><label class="small muted"><input id="filterRole" type="checkbox" checked> Show roles</label></div>
+      </div>
+
+      <table id="employeesTable">
+        <thead>
+          <tr><th>Name</th><th>ID</th><th>Email</th><th>Role</th></tr>
+        </thead>
+        <tbody id="empBody"></tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <aside class="right-panel">
+    <h3>Countries Insight</h3>
+
+    <div class="country-item" onclick="onCountryClick('Germany',43)">
+      <div class="country-row">
+        <div class="country-flag"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Flag_of_Germany_%28RGB%29.svg/330px-Flag_of_Germany_%28RGB%29.svg.png"></div>
+        <div>
+          <div style="font-weight:600">Germany</div>
+          <div class="small muted">Top talent pool</div>
+        </div>
+        <div style="text-align:right">43%</div>
+        <div style="grid-column:2/span 2;margin-top:8px">
+          <div class="progress"><i style="width:43%;background:linear-gradient(90deg,var(--accent),var(--accent-2));"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="country-item" onclick="onCountryClick('Japan',38)">
+      <div class="country-row">
+        <div class="country-flag"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/1280px-Flag_of_Japan.svg.png"></div>
+        <div>
+          <div style="font-weight:600">Japan</div>
+          <div class="small muted">Strong engineering talent</div>
+        </div>
+        <div style="text-align:right">38%</div>
+        <div style="grid-column:2/span 2;margin-top:8px">
+          <div class="progress"><i style="width:38%;background:linear-gradient(90deg,#ff7a7a,#ffc77b);"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="country-item" onclick="onCountryClick('Russia',19)">
+      <div class="country-row">
+        <div class="country-flag"><img src="https://cdn.britannica.com/42/3842-050-68EEE2C4/Flag-Russia.jpg"></div>
+        <div>
+          <div style="font-weight:600">Russia</div>
+          <div class="small muted">Large candidate base</div>
+        </div>
+        <div style="text-align:right">19%</div>
+        <div style="grid-column:2/span 2;margin-top:8px">
+          <div class="progress"><i style="width:19%;background:linear-gradient(90deg,#6be585,#2dbd9f);"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:18px">Vacancies</h3>
+    <div class="vacancy-item">Financial Analyst</div>
+    <div class="vacancy-item">Software Developer</div>
+    <div class="vacancy-item">Project Manager</div>
+
+    <div class="activity">
+      <h3 style="margin-top:16px">Activity Log</h3>
+      <div id="activityList"></div>
+    </div>
+
+    <div class="page-meta small muted" style="margin-top:14px">‎ </div>
+  </aside>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+const TZ = 'Asia/Tbilisi';
+
+function fmtTime(date){
+  try{
+    return new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:TZ}).format(date);
+  }catch(e){
+    return date.toLocaleTimeString();
+  }
+}
+function fmtDateTime(date){
+  try{
+    return new Intl.DateTimeFormat('en-GB',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',timeZone:TZ}).format(date);
+  }catch(e){
+    return date.toLocaleString();
+  }
+}
+
+function updateGreeting(){
+  const now = new Date();
+  let hour = new Intl.DateTimeFormat('en-US',{hour:'numeric',hour12:false,timeZone:TZ}).format(now);
+  hour = Number(hour);
+  const greetingEl = document.getElementById('greeting');
+  if(hour >= 5 && hour < 12) greetingEl.textContent = 'Good morning, User ☀️';
+  else if(hour >= 12 && hour < 18) greetingEl.textContent = 'Good afternoon, User ☀️';
+  else greetingEl.textContent = 'Good evening, User 🌙';
+
+  document.getElementById('timeNow').textContent = 'Tbilisi time — ' + fmtTime(now);
+  document.getElementById('lastUpdated').textContent = fmtDateTime(now);
+}
+updateGreeting();
+setInterval(updateGreeting,1000);
+
+const employees = [
+  ["Emma Johnson","#E501","ejohnson@example.com","Project Manager"],
+  ["Liam Smith","#E502","lsmith@example.com","Frontend Developer"],
+  ["Olivia Brown","#E503","obrown@example.com","Backend Developer"],
+  ["Noah Davis","#E504","ndavis@example.com","UX Designer"],
+  ["Ava Wilson","#E505","awilson@example.com","QA Tester"],
+  ["Lucas Martinez","#E506","lmartinez@example.com","Data Analyst"],
+  ["Sophia Anderson","#E507","sanderson@example.com","UI Designer"],
+  ["Mason Thomas","#E508","mthomas@example.com","DevOps Engineer"],
+  ["Isabella Taylor","#E509","itaylor@example.com","Content Writer"],
+  ["James Moore","#E510","jmoore@example.com","Marketing Specialist"],
+  ["Charlotte Lee","#E511","clee@example.com","Product Owner"],
+  ["Benjamin White","#E512","bwhite@example.com","Business Analyst"],
+  ["Mia Harris","#E513","mharris@example.com","Scrum Master"],
+  ["Elijah Clark","#E514","eclark@example.com","Cloud Engineer"],
+  ["Amelia Lewis","#E515","alewis@example.com","Graphic Designer"],
+  ["Alexander Robinson","#E516","arobinson@example.com","Fullstack Developer"],
+  ["Harper Walker","#E517","hwalker@example.com","SEO Specialist"],
+  ["Daniel Hall","#E518","dhall@example.com","Mobile Developer"],
+  ["Evelyn Young","#E519","eyoung@example.com","Technical Writer"],
+  ["Logan King","#E520","lking@example.com","AI Engineer"],
+  ["Scarlett Wright","#E521","swright@example.com","Support Engineer"],
+  ["Matthew Scott","#E522","mscott@example.com","Cybersecurity Analyst"],
+  ["Victoria Green","#E523","vgreen@example.com","HR Specialist"],
+  ["Joseph Baker","#E524","jbaker@example.com","IT Consultant"]
+];
+
+const activities = [
+  ["Emma Johnson updated her profile", new Date(Date.now()-1000*60*60*2)],
+  ["New applicant added: Ava K.", new Date(Date.now()-1000*60*60*6)],
+  ["Liam Smith promoted to Senior Frontend", new Date(Date.now()-1000*60*60*24)],
+];
+
+const empBody = document.getElementById('empBody');
+const empCountEl = document.getElementById('empCount');
+function renderEmployees(list){
+  empBody.innerHTML = '';
+  list.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row[0]}</td>
+      <td>${row[1]}</td>
+      <td>${row[2]}</td>
+      <td><span class="role-badge">${row[3]}</span></td>
+    `;
+    empBody.appendChild(tr);
+  });
+  empCountEl.textContent = list.length;
+}
+renderEmployees(employees);
+
+const activityList = document.getElementById('activityList');
+function renderActivities(list){
+  activityList.innerHTML = '';
+  list.forEach(([text, date])=>{
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `<div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.02);display:grid;place-items:center;font-weight:700">${text[0]}</div>
+      <div style="flex:1"><div style="font-weight:600">${text}</div><div class="small muted">${fmtDateTime(date)}</div></div>
+      <div class="time small muted">${timeSince(date)}</div>`;
+    activityList.appendChild(div);
+  });
+  updateNotifBadge(list.length);
+}
+function timeSince(date){
+  const s = Math.floor((Date.now()-date.getTime())/1000);
+  if(s<60) return `${s}s`;
+  if(s<3600) return `${Math.floor(s/60)}m`;
+  if(s<86400) return `${Math.floor(s/3600)}h`;
+  return `${Math.floor(s/86400)}d`;
+}
+renderActivities(activities);
+
+function updateNotifBadge(n){
+  const el = document.getElementById('notifBadge');
+  el.textContent = n;
+  el.style.display = n>0 ? 'inline-block' : 'none';
+}
+
+function animateCounters(){
+  const counters = document.querySelectorAll('.count');
+  counters.forEach(el=>{
+    const target = Number(el.getAttribute('data-target')) || Number(el.textContent) || 0;
+    let start = 0;
+    const duration = 1400 + Math.random()*500;
+    const startTime = performance.now();
+
+    function step(ts){
+      const progress = Math.min((ts - startTime)/duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = Math.floor(start + (target - start) * eased);
+      el.textContent = value.toLocaleString();
+      if(progress < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString();
+    }
+    requestAnimationFrame(step);
+  });
+}
+animateCounters();
+
+document.getElementById('activeNow').textContent = Math.floor(Math.random()*120);
+
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if(!q){ renderEmployees(employees); return; }
+  const filtered = employees.filter(r => r.join(' ').toLowerCase().includes(q));
+  renderEmployees(filtered);
+});
+
+const ctx = document.getElementById('MainChart').getContext('2d');
+const gradient = ctx.createLinearGradient(0,0,0,160);
+gradient.addColorStop(0,'rgba(124,92,255,0.28)');
+gradient.addColorStop(1,'rgba(124,92,255,0.02)');
+
+
+
+
+
+const chart = new Chart(ctx, {
+  type:'line',
+  data:{
+    labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    datasets:[
+      {
+        label:'Vacancies',
+        data:[20,25,40,30,35,50,48,52,55,49,60,58],
+        fill:true,
+        backgroundColor:gradient,
+        borderColor:'rgba(124,92,255,0.95)',
+        pointRadius:3,
+        tension:0.38,
+        borderWidth:2,
+        pointHoverRadius:6,
+      },
+      {
+        label:'Candidates',
+        data:[10,12,18,16,20,22,24,28,26,20,34,40],
+        fill:false,
+        borderColor:'rgba(65,209,255,0.9)',
+        pointRadius:2,
+        tension:0.4,
+        borderWidth:2,
+        borderDash:[4,6]
+      }
+    ]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{
+        labels:{color:'#cfe6ff'}
+      },
+      tooltip:{mode:'index',intersect:false}
+    },
+    scales:{
+      x:{
+        ticks:{color:'#cfe6ff'},
+        grid:{display:false}
+      },
+      y:{
+        ticks:{color:'#cfe6ff'},
+        grid:{color:'rgba(255,255,255,0.02)'}
+      }
+    }
+  }
+});
+
+function onCountryClick(name, percent){
+  const now = new Date();
+  activities.unshift([`Viewed insights for ${name} (${percent}%)`, now]);
+  renderActivities(activities.slice(0,8));
+  alert(`${name}\nShare of candidates: ${percent}%\nTop sourcing: LinkedIn, Local Universities`);
+}
+
+empBody.addEventListener('click', (e)=>{
+  let tr = e.target.closest('tr');
+  if(!tr) return;
+  const name = tr.children[0].textContent;
+  const now = new Date();
+  activities.unshift([`${name} profile opened`, now]);
+  renderActivities(activities.slice(0,8));
+});
+
+document.getElementById('lastUpdated').addEventListener('click', ()=>{
+  const now = new Date();
+  document.getElementById('lastUpdated').textContent = fmtDateTime(now);
+});
+
+if(localStorage.getItem("theme") === "light"){
+  document.body.classList.add("light");
+  document.documentElement.classList.add("light");
+  document.getElementById("themeToggle").textContent = "Dark Mode";
+}
+
+document.getElementById("themeToggle").addEventListener("click", () => {
+  const isLight = document.body.classList.toggle("light");
+  document.documentElement.classList.toggle("light");
+
+  document.getElementById("themeToggle").textContent =
+    isLight ? "Dark Mode" : "Light Mode";
+
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+});
+
+
+
+<br>
+<br>
+ 
+
+</script>
+</body>
+</html>
